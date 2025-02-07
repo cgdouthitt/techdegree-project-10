@@ -4,9 +4,6 @@ import axios from "axios";
 import LoadingContext from "../context/LoadingContext";
 
 const Courses = () => {
-  // const [data, setData] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
   const { data, loading, error, actions } = useContext(LoadingContext);
 
   useEffect(() => {
@@ -30,6 +27,7 @@ const Courses = () => {
           <a
             className="course--module course--link"
             href={"/courses/" + course.id}
+            key={course.id}
           >
             <h2 className="course--label">Course</h2>
             <h3 className="course--title">{course.title}</h3>
