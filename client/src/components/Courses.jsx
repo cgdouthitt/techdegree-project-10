@@ -23,7 +23,7 @@ const Courses = () => {
   return (
     <main>
       <div className="wrap main--grid">
-        {data.map((course) => (
+        {data?.map((course) => (
           <a
             className="course--module course--link"
             href={"/courses/" + course.id}
