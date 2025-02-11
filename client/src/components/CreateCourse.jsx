@@ -1,6 +1,7 @@
-import { useContext, useRef } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useContext, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import { api } from "../utils/apiHelper";
 
 const CreateCourse = () => {
   const { user } = useContext(UserContext);
@@ -10,16 +11,27 @@ const CreateCourse = () => {
   const description = useRef(null);
   const estimatedTime = useRef(null);
   const materialsNeeded = useRef(null);
-
-  const course = {
-    title: title,
-    description: description,
-    estimatedTime: estimatedTime,
-    materialsNeeded: materialsNeeded,
-  };
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const course = {
+      userId: user.id,
+      title: title.current.value,
+      description: description.current.value,
+      estimatedTime: estimatedTime.current.value,
+      materialsNeeded: materialsNeeded.current.value,
+    };
+
+    try {
+      const response = await api("/courses", "POST", course);
+      if (response.status === 201) {
+        navigate("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleCancel = (event) => {
