@@ -11,6 +11,7 @@ const UserSignUp = () => {
   const lastName = useRef(null);
   const password = useRef(null);
   const emailAddress = useRef(null);
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,9 +22,22 @@ const UserSignUp = () => {
       emailAddress: emailAddress.current.value,
       password: password.current.value,
     };
-    console.log(user);
+
     const response = await api("/users", "POST", user);
-    console.log(response);
+
+    if (response.status === 201) {
+      const credentials = {
+        username: user.emailAddress,
+        password: user.password,
+      };
+      await actions.signIn(credentials);
+      navigate("/");
+    } else if (response.status === 400) {
+      const data = await response.json();
+      setErrors(data.errors);
+    } else {
+      throw new Error();
+    }
   };
 
   const handleCancel = (event) => {
