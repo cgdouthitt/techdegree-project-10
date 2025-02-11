@@ -1,29 +1,19 @@
-import { useContext, useEffect } from "react";
-import axios from "axios";
-
-import LoadingContext from "../context/LoadingContext";
+import { useEffect, useState } from "react";
+import { api } from "../utils/apiHelper";
 
 const Courses = () => {
-  const { data, loading, error, actions } = useContext(LoadingContext);
-
+  const [courses, setCourses] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
-      await axios
-        .get("http://localhost:5000/api/courses")
-        .then((response) => {
-          actions.setData(response.data);
-        })
-        .catch((error) => actions.setError(error))
-        .finally(actions.setLoading(false));
-    };
-
-    fetchData();
+    (async () => {
+      const response = await api("/courses", "GET", null, null);
+      setCourses(response.data);
+    })();
   }, []);
 
   return (
-    <main>
+    <>
       <div className="wrap main--grid">
-        {data?.map((course) => (
+        {courses?.map((course) => (
           <a
             className="course--module course--link"
             href={"/courses/" + course.id}
@@ -52,7 +42,7 @@ const Courses = () => {
           </span>
         </a>
       </div>
-    </main>
+    </>
   );
 };
 

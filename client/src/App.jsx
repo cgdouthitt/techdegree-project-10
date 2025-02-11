@@ -4,16 +4,22 @@ import Header from "./components/Header";
 import Courses from "./components/Courses";
 import CourseDetail from "./components/CourseDetail";
 import UserSignIn from "./components/UserSignIn";
+import UserSignOut from "./components/UserSingOut";
+import UserSignUp from "./components/UserSignUp";
 
 function App() {
   return (
     <>
       <Header />
-      <Routes>
-        <Route path="/" element={<Courses />}></Route>
-        <Route path="courses/:id" element={<CourseDetail />}></Route>
-        <Route path="signin" element={<UserSignIn />}></Route>
-      </Routes>
+      <main>
+        <Routes>
+          <Route path="/" element={<Courses />}></Route>
+          <Route path="courses/:id" element={<CourseDetail />}></Route>
+          <Route path="signup" element={<UserSignUp />}></Route>
+          <Route path="signin" element={<UserSignIn />}></Route>
+          <Route path="signout" element={<UserSignOut />}></Route>
+        </Routes>
+      </main>
     </>
   );
 }

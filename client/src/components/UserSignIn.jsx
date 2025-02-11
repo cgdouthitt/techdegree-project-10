@@ -3,24 +3,30 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 const UserSignIn = () => {
-  const { user, actions } = useContext(UserContext);
+  const { actions } = useContext(UserContext);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const username = useRef(null);
   const password = useRef(null);
+  const [errors, setErrors] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    console.log(username);
-    console.log(password);
+    let from = "/";
+    if (location.state) {
+      from = location.state.from;
+    }
+
     const credentials = {
       username: username.current.value,
       password: password.current.value,
     };
-    console.log(credentials);
+
     try {
       const user = await actions.signIn(credentials);
+      user ? navigate(from) : setErrors(["Sign- in was unsuccessful"]);
     } catch (error) {
       console.log(error);
     }
@@ -32,7 +38,7 @@ const UserSignIn = () => {
   };
 
   return (
-    <main>
+    <>
       <div className="form--centered">
         <h2>Sign In</h2>
         <form onSubmit={handleSubmit}>
@@ -64,7 +70,7 @@ const UserSignIn = () => {
           <Link to="/signup">sign up</Link>!
         </p>
       </div>
-    </main>
+    </>
   );
 };
 

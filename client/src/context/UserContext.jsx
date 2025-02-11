@@ -1,25 +1,34 @@
 import { createContext, useState } from "react";
+import Cookies from "js-cookie";
 import { api } from "../utils/apiHelper";
 
 const UserContext = createContext(null);
 
 export const UserProvider = (props) => {
-  const [user, setUser] = useState(null);
+  const cookie = Cookies.get("authenticatedUser");
+
+  const [user, setUser] = useState(cookie ? JSON.parse(cookie) : null);
 
   const signInUser = async (credentials) => {
-    console.log(credentials);
     const response = await api("/users", "GET", null, credentials);
-    console.log(response);
-    const newUser = {
-      username,
-      password,
-    };
 
-    setUser(newUser);
+    if (response.status === 200) {
+      const user = await response.data;
+      setUser(user);
+      Cookies.set("authenticatedUser", JSON.stringify(user), {
+        expires: 1,
+      });
+      return user;
+    } else if (response.status === 401) {
+      return null;
+    } else {
+      throw new Error();
+    }
   };
 
   const signOutUser = () => {
     setUser(null);
+    Cookies.remove("authenticatedUser");
   };
 
   return (
