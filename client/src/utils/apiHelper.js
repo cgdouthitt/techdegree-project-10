@@ -9,8 +9,10 @@ export const api = (path, method = "GET", body = null, credentials = null) => {
   };
 
   if (body) {
+    console.log("body", JSON.stringify(body));
     options.body = JSON.stringify(body);
     options.headers["Content-Type"] = "application/json; charset=utf-8";
+    console.log(options);
   }
 
   if (credentials) {

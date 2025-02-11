@@ -26,6 +26,7 @@ router.get(
 
 // Route that creates a new user.
 router.post("/users", async (req, res) => {
+  console.log("api body", req.body);
   try {
     await User.create(req.body);
     res.set("Location", "/");
