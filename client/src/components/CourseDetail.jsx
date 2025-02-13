@@ -17,13 +17,14 @@ const CourseDetail = () => {
     })();
   }, []);
 
-  const credentials = {
-    username: user.emailAddress,
-    password: user.password,
-  };
-
   const handleDelete = async (event) => {
     event.preventDefault();
+
+    const credentials = {
+      username: user.emailAddress,
+      password: user.password,
+    };
+
     await api(`/courses/${id}`, "DELETE", null, credentials);
     navigate("/");
   };
