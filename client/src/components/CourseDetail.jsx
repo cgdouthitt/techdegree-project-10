@@ -17,6 +17,14 @@ const CourseDetail = () => {
     })();
   }, []);
 
+  const checkOwner = () => {
+    const courseUser = details?.User?.id;
+    const loggedInUser = user.id;
+    const ownerUser = courseUser === loggedInUser ? true : false;
+
+    return ownerUser;
+  };
+
   const handleDelete = async (event) => {
     event.preventDefault();
 
@@ -33,12 +41,18 @@ const CourseDetail = () => {
     <>
       <div className="actions--bar">
         <div className="wrap">
-          <Link className="button" to={"/courses/" + id + "/update"}>
-            Update Course
-          </Link>
-          <button className="button" onClick={handleDelete}>
-            Delete Course
-          </button>
+          {checkOwner() ? (
+            <>
+              <Link className="button" to={"/courses/" + id + "/update"}>
+                Update Course
+              </Link>
+              <button className="button" onClick={handleDelete}>
+                Delete Course
+              </button>
+            </>
+          ) : (
+            <></>
+          )}
           <Link className="button button-secondary" to="/">
             Return to List
           </Link>
