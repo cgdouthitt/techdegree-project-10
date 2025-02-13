@@ -14,6 +14,7 @@ export const UserProvider = (props) => {
 
     if (response.status === 200) {
       const user = await response.data;
+      user.password = credentials.password;
       setUser(user);
       Cookies.set("authenticatedUser", JSON.stringify(user), {
         expires: 1,

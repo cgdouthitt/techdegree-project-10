@@ -1,18 +1,27 @@
-import { useContext, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useRef, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import { api } from "../utils/apiHelper";
 import ValidationErrors from "./ValidationErrors";
 
-const CreateCourse = () => {
+const UpdateCourse = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate(null);
+  const { id } = useParams();
+  const [details, setDetails] = useState(null);
 
   const title = useRef(null);
   const description = useRef(null);
   const estimatedTime = useRef(null);
   const materialsNeeded = useRef(null);
   const [errors, setErrors] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      const response = await api(`/courses/${id}`, "GET", null, null);
+      setDetails(response.data);
+    })();
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,10 +40,8 @@ const CreateCourse = () => {
     };
 
     try {
-      const response = await api("/courses", "POST", course, credentials);
-      if (response.status === 201) {
-        navigate("/");
-      }
+      const response = await api(`/courses/${id}`, "PUT", course, credentials);
+      navigate(`/courses/${id}`);
     } catch (error) {
       if (error.status === 400) {
         setErrors(error.response.data.errors);
@@ -52,7 +59,7 @@ const CreateCourse = () => {
   return (
     <>
       <div className="wrap">
-        <h2>Create Course</h2>
+        <h2>Update Course</h2>
         <ValidationErrors errors={errors} />
         <form onSubmit={handleSubmit}>
           <div className="main--flex">
@@ -62,15 +69,17 @@ const CreateCourse = () => {
                 id="courseTitle"
                 name="courseTitle"
                 type="text"
+                defaultValue={details?.title}
                 ref={title}
               />
               <p>
-                By {user.firstName} {user.lastName}
+                By {details?.User?.firstName} {details?.User?.lastName}
               </p>
               <label htmlFor="courseDescription">Course Description</label>
               <textarea
                 id="courseDescription"
                 name="courseDescription"
+                defaultValue={details?.description}
                 ref={description}
               ></textarea>
             </div>
@@ -80,18 +89,20 @@ const CreateCourse = () => {
                 id="estimatedTime"
                 name="estimatedTime"
                 type="text"
+                defaultValue={details?.estimatedTime}
                 ref={estimatedTime}
               />
               <label htmlFor="materialsNeeded">Materials Needed</label>
               <textarea
                 id="materialsNeeded"
                 name="materialsNeeded"
+                defaultValue={details?.materialsNeeded}
                 ref={materialsNeeded}
               ></textarea>
             </div>
           </div>
           <button className="button" type="submit">
-            Create Course
+            Update Course
           </button>
           <button className="button button-secondary" onClick={handleCancel}>
             Cancel
@@ -102,4 +113,4 @@ const CreateCourse = () => {
   );
 };
 
-export default CreateCourse;
+export default UpdateCourse;

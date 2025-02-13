@@ -2,6 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
 import { api } from "../utils/apiHelper";
 import UserContext from "../context/UserContext";
+import ValidationErrors from "./ValidationErrors";
 
 const UserSignUp = () => {
   const { actions } = useContext(UserContext);
@@ -23,20 +24,23 @@ const UserSignUp = () => {
       password: password.current.value,
     };
 
-    const response = await api("/users", "POST", user);
+    try {
+      const response = await api("/users", "POST", user);
 
-    if (response.status === 201) {
-      const credentials = {
-        username: user.emailAddress,
-        password: user.password,
-      };
-      await actions.signIn(credentials);
-      navigate("/");
-    } else if (response.status === 400) {
-      const data = await response.json();
-      setErrors(data.errors);
-    } else {
-      throw new Error();
+      if (response.status === 201) {
+        const credentials = {
+          username: user.emailAddress,
+          password: user.password,
+        };
+        await actions.signIn(credentials);
+        navigate("/");
+      }
+    } catch (error) {
+      if (error.status === 400) {
+        setErrors(error.response.data.errors);
+      } else {
+        throw new Error();
+      }
     }
   };
 
@@ -48,7 +52,7 @@ const UserSignUp = () => {
   return (
     <div className="form--centered">
       <h2>Sign Up</h2>
-
+      <ValidationErrors errors={errors} />
       <form onSubmit={handleSubmit}>
         <label htmlFor="firstName">First Name</label>
         <input id="firstName" name="firstName" type="text" ref={firstName} />

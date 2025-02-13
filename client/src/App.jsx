@@ -7,6 +7,7 @@ import UserSignIn from "./components/UserSignIn";
 import UserSignOut from "./components/UserSingOut";
 import UserSignUp from "./components/UserSignUp";
 import CreateCourse from "./components/CreateCourse";
+import UpdateCourse from "./components/UpdateCourse";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="signin" element={<UserSignIn />}></Route>
           <Route path="signout" element={<UserSignOut />}></Route>
           <Route path="courses/create" element={<CreateCourse />}></Route>
+          <Route path="courses/:id/update" element={<UpdateCourse />}></Route>
         </Routes>
       </main>
     </>

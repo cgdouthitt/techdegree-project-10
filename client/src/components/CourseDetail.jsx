@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { api } from "../utils/apiHelper";
+import UserContext from "../context/UserContext";
 import ReactMarkdown from "react-markdown";
 
 const CourseDetail = () => {
   const { id } = useParams();
   const [details, setDetails] = useState(null);
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     (async () => {
@@ -14,19 +17,30 @@ const CourseDetail = () => {
     })();
   }, []);
 
+  const credentials = {
+    username: user.emailAddress,
+    password: user.password,
+  };
+
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    await api(`/courses/${id}`, "DELETE", null, credentials);
+    navigate("/");
+  };
+
   return (
     <>
       <div className="actions--bar">
         <div className="wrap">
-          <a className="button" href={"/courses/" + id + "/update"}>
+          <Link className="button" to={"/courses/" + id + "/update"}>
             Update Course
-          </a>
-          <a className="button" href="/">
+          </Link>
+          <button className="button" onClick={handleDelete}>
             Delete Course
-          </a>
-          <a className="button button-secondary" href="/">
+          </button>
+          <Link className="button button-secondary" to="/">
             Return to List
-          </a>
+          </Link>
         </div>
       </div>
 
