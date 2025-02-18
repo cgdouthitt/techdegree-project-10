@@ -27,7 +27,7 @@ const CourseDetail = () => {
         }
       }
     })();
-  }, []);
+  }, [id, navigate]);
 
   //Used to conditionally render delete and update buttons only for course owner
   const checkOwner = () => {

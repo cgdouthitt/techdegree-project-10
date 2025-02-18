@@ -1,7 +1,6 @@
 //This component is used to display various errors that could occur during course creation and update
 const ValidationErrors = ({ errors }) => {
   let validationErrors = null;
-  console.log(errors);
 
   if (errors.length) {
     validationErrors = (

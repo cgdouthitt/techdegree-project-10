@@ -19,9 +19,12 @@ const UpdateCourse = () => {
 
   //Load course data and also handle various errors that could occur
   useEffect(() => {
+    console.log(id);
     (async () => {
       try {
         const response = await api(`/courses/${id}`, "GET", null, null);
+        console.log(response.data !== null);
+        console.log(response);
         setDetails(response.data);
 
         const courseUser = response.data.User.id;
@@ -42,7 +45,7 @@ const UpdateCourse = () => {
         }
       }
     })();
-  }, []);
+  }, [id, user, navigate]);
 
   //This handles the submission and call to the PUT api
   const handleSubmit = async (event) => {
@@ -62,7 +65,7 @@ const UpdateCourse = () => {
     };
 
     try {
-      const response = await api(`/courses/${id}`, "PUT", course, credentials);
+      await api(`/courses/${id}`, "PUT", course, credentials);
       navigate(`/courses/${id}`);
     } catch (error) {
       if (error.status === 400) {

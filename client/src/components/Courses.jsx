@@ -19,7 +19,7 @@ const Courses = () => {
         }
       }
     })();
-  }, []);
+  }, [navigate]);
 
   return (
     <>

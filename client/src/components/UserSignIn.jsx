@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
@@ -10,7 +10,6 @@ const UserSignIn = () => {
 
   const username = useRef(null);
   const password = useRef(null);
-  const [errors, setErrors] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,7 +26,7 @@ const UserSignIn = () => {
 
     try {
       const user = await actions.signIn(credentials);
-      user ? navigate(from) : setErrors(["Sign- in was unsuccessful"]);
+      user && navigate(from);
     } catch (error) {
       console.log(error);
     }
@@ -46,7 +45,7 @@ const UserSignIn = () => {
           <label htmlFor="emailAddress">Email Address</label>
           <input
             id="emailAddress"
-            email="emailAddress"
+            name="emailAddress"
             type="email"
             ref={username}
             placeholder="User Name"
@@ -67,7 +66,7 @@ const UserSignIn = () => {
           </button>
         </form>
         <p>
-          Don't have a user accout? Click here to{" "}
+          Don&apos;t have a user accout? Click here to{" "}
           <Link to="/signup">sign up</Link>!
         </p>
       </div>
