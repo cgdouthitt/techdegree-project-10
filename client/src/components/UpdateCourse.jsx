@@ -19,19 +19,16 @@ const UpdateCourse = () => {
 
   //Load course data and also handle various errors that could occur
   useEffect(() => {
-    console.log(id);
     (async () => {
       try {
         const response = await api(`/courses/${id}`, "GET", null, null);
-        console.log(response.data !== null);
-        console.log(response);
         setDetails(response.data);
 
-        const courseUser = response.data.User.id;
         if (!response.data) {
           navigate("/notfound");
         } else {
           if (user) {
+            const courseUser = response.data.User.id;
             const loggedInUser = user.id;
             const ownerUser = courseUser === loggedInUser ? true : false;
             if (!ownerUser) {
