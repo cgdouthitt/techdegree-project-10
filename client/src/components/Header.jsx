@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 
+//This component has a few navigation buttons for basic sign up/in/out and home page navigation
 const Header = () => {
   const { user } = useContext(UserContext);
 

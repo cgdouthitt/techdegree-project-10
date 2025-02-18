@@ -4,6 +4,7 @@ import UserContext from "../context/UserContext";
 import { api } from "../utils/apiHelper";
 import ValidationErrors from "./ValidationErrors";
 
+//This component is used to update existing courses
 const UpdateCourse = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate(null);
@@ -16,13 +17,34 @@ const UpdateCourse = () => {
   const materialsNeeded = useRef(null);
   const [errors, setErrors] = useState([]);
 
+  //Load course data and also handle various errors that could occur
   useEffect(() => {
     (async () => {
-      const response = await api(`/courses/${id}`, "GET", null, null);
-      setDetails(response.data);
+      try {
+        const response = await api(`/courses/${id}`, "GET", null, null);
+        setDetails(response.data);
+
+        const courseUser = response.data.User.id;
+        if (!response.data) {
+          navigate("/notfound");
+        } else {
+          if (user) {
+            const loggedInUser = user.id;
+            const ownerUser = courseUser === loggedInUser ? true : false;
+            if (!ownerUser) {
+              navigate("/forbidden");
+            }
+          }
+        }
+      } catch (error) {
+        if (error.status === 500) {
+          navigate("/error");
+        }
+      }
     })();
   }, []);
 
+  //This handles the submission and call to the PUT api
   const handleSubmit = async (event) => {
     event.preventDefault();
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 
+//This is a universal method to call the api in whatever manner is necessary
 export const api = (path, method = "GET", body = null, credentials = null) => {
   const url = "http://localhost:5000/api" + path;
 

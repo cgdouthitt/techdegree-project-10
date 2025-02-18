@@ -4,6 +4,7 @@ import { api } from "../utils/apiHelper";
 
 const UserContext = createContext(null);
 
+//This is used to track the user state easily from all components
 export const UserProvider = (props) => {
   const cookie = Cookies.get("authenticatedUser");
 

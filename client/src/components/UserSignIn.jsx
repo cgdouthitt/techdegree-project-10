@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
+//This component is used to sign the users in
 const UserSignIn = () => {
   const { actions } = useContext(UserContext);
   const navigate = useNavigate();

@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../utils/apiHelper";
 
+//This component displays all courses
 const Courses = () => {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState(null);
+
+  //Loads course data upon render. Error handling route setup to handle any issues
   useEffect(() => {
     (async () => {
-      const response = await api("/courses", "GET", null, null);
-      setCourses(response.data);
+      try {
+        const response = await api("/courses", "GET", null, null);
+        setCourses(response.data);
+      } catch (error) {
+        if (error.status === 500) {
+          navigate("/error");
+        }
+      }
     })();
   }, []);
 

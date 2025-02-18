@@ -9,6 +9,9 @@ import UserSignUp from "./components/UserSignUp";
 import CreateCourse from "./components/CreateCourse";
 import UpdateCourse from "./components/UpdateCourse";
 import PrivateRoute from "./components/Privateroute";
+import NotFound from "./components/NotFound";
+import Forbidden from "./components/Forbidden";
+import UnhandledError from "./components/UnhandledError";
 
 function App() {
   return (
@@ -25,6 +28,10 @@ function App() {
             <Route path="courses/create" element={<CreateCourse />}></Route>
             <Route path="courses/:id/update" element={<UpdateCourse />}></Route>
           </Route>
+          <Route path="forbidden" element={<Forbidden />}></Route>
+          <Route path="error" element={<UnhandledError />}></Route>
+          <Route path="notfound" element={<NotFound />}></Route>
+          <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </main>
     </>

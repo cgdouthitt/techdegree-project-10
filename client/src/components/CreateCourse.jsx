@@ -4,6 +4,7 @@ import UserContext from "../context/UserContext";
 import { api } from "../utils/apiHelper";
 import ValidationErrors from "./ValidationErrors";
 
+//This component is used to create new courses
 const CreateCourse = () => {
   const { user } = useContext(UserContext);
   const navigate = useNavigate(null);
@@ -14,14 +15,17 @@ const CreateCourse = () => {
   const materialsNeeded = useRef(null);
   const [errors, setErrors] = useState([]);
 
+  //Creation handler to create a new course based on input information
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    //Credentials necessary for POST api
     const credentials = {
       username: user.emailAddress,
       password: user.password,
     };
 
+    //User entered values
     const course = {
       userId: user.id,
       title: title.current.value,
@@ -30,6 +34,7 @@ const CreateCourse = () => {
       materialsNeeded: materialsNeeded.current.value,
     };
 
+    //POST for creation of course
     try {
       const response = await api("/courses", "POST", course, credentials);
       if (response.status === 201) {

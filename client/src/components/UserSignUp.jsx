@@ -4,6 +4,7 @@ import { api } from "../utils/apiHelper";
 import UserContext from "../context/UserContext";
 import ValidationErrors from "./ValidationErrors";
 
+//This component is used to allow users to sign up
 const UserSignUp = () => {
   const { actions } = useContext(UserContext);
   const navigate = useNavigate();

@@ -4,27 +4,43 @@ import { api } from "../utils/apiHelper";
 import UserContext from "../context/UserContext";
 import ReactMarkdown from "react-markdown";
 
+//This compenent displays the course details
 const CourseDetail = () => {
   const { id } = useParams();
   const [details, setDetails] = useState(null);
   const navigate = useNavigate();
   const { user } = useContext(UserContext);
 
+  //Loads course data upon render. Various error handling routes are setup to handle any issues
   useEffect(() => {
     (async () => {
-      const response = await api(`/courses/${id}`, "GET", null, null);
-      setDetails(response.data);
+      try {
+        const response = await api(`/courses/${id}`, "GET", null, null);
+        if (!response.data) {
+          navigate("/notfound");
+        } else {
+          setDetails(response.data);
+        }
+      } catch (error) {
+        if (error.status === 500) {
+          navigate("/error");
+        }
+      }
     })();
   }, []);
 
+  //Used to conditionally render delete and update buttons only for course owner
   const checkOwner = () => {
     const courseUser = details?.User?.id;
-    const loggedInUser = user.id;
-    const ownerUser = courseUser === loggedInUser ? true : false;
+    if (user) {
+      const loggedInUser = user.id;
+      const ownerUser = courseUser === loggedInUser ? true : false;
 
-    return ownerUser;
+      return ownerUser;
+    }
   };
 
+  //Delete handler
   const handleDelete = async (event) => {
     event.preventDefault();
 
