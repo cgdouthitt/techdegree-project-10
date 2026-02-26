@@ -2,7 +2,7 @@ import axios from "axios";
 
 //This is a universal method to call the api in whatever manner is necessary
 export const api = (path, method = "GET", body = null, credentials = null) => {
-  const url = "http://localhost:5000/api" + path;
+  const url = `${import.meta.env.VITE_API_URL}/api${path}`;
 
   const options = {
     method,
@@ -16,7 +16,7 @@ export const api = (path, method = "GET", body = null, credentials = null) => {
 
   if (credentials) {
     const encodedCredentials = btoa(
-      `${credentials.username}:${credentials.password}`
+      `${credentials.username}:${credentials.password}`,
     );
     options.headers.Authorization = `Basic ${encodedCredentials}`;
   }
