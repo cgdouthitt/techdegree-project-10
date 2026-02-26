@@ -8,7 +8,7 @@ import UserSignOut from "./components/UserSingOut";
 import UserSignUp from "./components/UserSignUp";
 import CreateCourse from "./components/CreateCourse";
 import UpdateCourse from "./components/UpdateCourse";
-import PrivateRoute from "./components/Privateroute";
+import PrivateRoute from "./components/PrivateRoute";
 import NotFound from "./components/NotFound";
 import Forbidden from "./components/Forbidden";
 import UnhandledError from "./components/UnhandledError";
